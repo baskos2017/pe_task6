@@ -1,4 +1,6 @@
 class MyReversed:
+
+    
     def __init__(self, list_):
         self.list = list_
         self.index = len(list_) - 1

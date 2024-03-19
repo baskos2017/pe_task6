@@ -97,6 +97,65 @@ class MyList(object):
     def __iter__(self):
         return MyList._Iterator(self)
     
+    def clear(self):
+        """очищує список"""
+        node = MyList._ListNode
+        self._head = self._tail = None
+        self._length = 0
+        return node
+    
+    def rem_last(self):
+        node = MyList._ListNode
+        if self._length == 0:
+            raise ValueError
+        elif self._length == 1:
+            self.clear()
+            self._length -= 1
+        else:
+            prev = self._tail.prev
+            prev.next = None
+            self._tail = prev
+            self._length -= 1
+        return node
+    
+    def insert(self, element, index):
+        if index < self._length:
+            current = self._head
+            for _ in range(index):
+                current = current.next
+            new = self._ListNode(element)
+            self._length += 1
+            if current == self._head:
+                self._head.prev = new
+                new.next = self._head
+                self._head = new
+            else:
+                new.prev = current.prev
+                current.prev.next = new
+                current.prev = new
+                new.next = current
+
+    def delete(self, index):
+        if index < self._length:
+            current = self._head
+            for _ in range(index):
+                current = current.next
+                self._length -= 1
+            if current == self._head and current == self._tail:
+                self.clear()
+            elif current == self._head:
+                self._head = self._head.next
+                self._head.prev = None
+            elif current == self._tail:
+                self._tail = self._tail.prev
+                self._tail.next = None
+            else:
+                current.prev.next = current.next
+                current.next.prev = current.prev
+
+    
+
+
 
 
 def main():
@@ -120,10 +179,22 @@ def main():
     # Повторный обход списка
     for element in my_list:
         print(element)
-    
-    my_list.append(6)
-    print(my_list)
 
+    my_list.insert(9,1)
+    print(my_list)
+    print(len(my_list))
+
+    my_list.delete(1)
+    print(my_list)
+    print(len(my_list))
+
+    my_list.rem_last()
+    print(my_list)
+    print(len(my_list))
+        
+    my_list.clear()
+    print(my_list)
+    print(len(my_list))
 
 if __name__ == '__main__':
     main()
